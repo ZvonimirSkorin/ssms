@@ -20,7 +20,6 @@ namespace Zadatak0102
             InitializeComponent();
             LoadDatabases();
             sqlRepository = new SqlRepository();
-            tbError.Multiline = true;
 
         }
 
@@ -31,7 +30,11 @@ namespace Zadatak0102
             try
             {
                 tbError.Text = "";
-                var vals = sqlRepository.GetData(tbQueryEditor.Text.ToString(), cbDatabases.SelectedValue.ToString());
+                var vals = sqlRepository.ExecuteQuery(tbQueryEditor.Text.ToString(), cbDatabases.SelectedValue.ToString(), tbError);
+
+                if (vals == null) {
+                    LoadDatabases();
+                    return; }
                 DataTable dataTable = vals.Tables[0];
                 Text = dataTable.TableName;
                 dataGridView1.DataSource = dataTable;

@@ -40,13 +40,15 @@
             // 
             this.tbQueryEditor.Location = new System.Drawing.Point(57, 70);
             this.tbQueryEditor.MinimumSize = new System.Drawing.Size(100, 100);
+            this.tbQueryEditor.Multiline = true;
             this.tbQueryEditor.Name = "tbQueryEditor";
             this.tbQueryEditor.Size = new System.Drawing.Size(652, 100);
             this.tbQueryEditor.TabIndex = 0;
+            this.tbQueryEditor.TabStop = false;
             // 
             // btnRunQuery
             // 
-            this.btnRunQuery.Location = new System.Drawing.Point(274, 176);
+            this.btnRunQuery.Location = new System.Drawing.Point(273, 211);
             this.btnRunQuery.Name = "btnRunQuery";
             this.btnRunQuery.Size = new System.Drawing.Size(229, 50);
             this.btnRunQuery.TabIndex = 1;
@@ -65,7 +67,7 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 280);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 328);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
@@ -74,9 +76,10 @@
             // 
             // tbError
             // 
-            this.tbError.Location = new System.Drawing.Point(12, 569);
+            this.tbError.Location = new System.Drawing.Point(12, 689);
+            this.tbError.Multiline = true;
             this.tbError.Name = "tbError";
-            this.tbError.Size = new System.Drawing.Size(827, 22);
+            this.tbError.Size = new System.Drawing.Size(827, 220);
             this.tbError.TabIndex = 4;
             // 
             // RawQueryEditor

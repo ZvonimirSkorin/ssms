@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 using Zadatak.Models;
 
 namespace Zadatak.Dal
@@ -15,6 +17,7 @@ namespace Zadatak.Dal
         private const string SelectEntities = "SELECT TABLE_SCHEMA AS [Schema], TABLE_NAME AS Name FROM {0}.INFORMATION_SCHEMA.{1}S";
         private const string SelectProcedures = "SELECT SPECIFIC_NAME as Name, ROUTINE_DEFINITION as Definition FROM {0}.INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'PROCEDURE'";
         private const string SelectColumns = "SELECT COLUMN_NAME as Name, DATA_TYPE as DataType FROM {0}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{1}'";
+
         private const string SelectProcedureParameters = "SELECT PARAMETER_NAME as Name, PARAMETER_MODE as Mode, DATA_TYPE as DataType FROM {0}.INFORMATION_SCHEMA.PARAMETERS WHERE SPECIFIC_NAME='{1}'";
         private const string SelectQuery = "SELECT * FROM {0}.{1}.{2}";
 
@@ -123,29 +126,6 @@ namespace Zadatak.Dal
             }
         }
 
-        public IEnumerable<Column> ExecuteQuery(string query, string dbName)
-        {
-            using (SqlConnection con = new SqlConnection(cs + $"Database={dbName};"))
-            {
-                con.Open();
-                using (SqlCommand cmd = con.CreateCommand())
-                {
-                    cmd.CommandText = query;
-                    cmd.CommandType = CommandType.Text;
-                    using (SqlDataReader dr = cmd.ExecuteReader())
-                    {
-                        while (dr.Read())
-                        {
-                            yield return new Column
-                            {
-                                Name = dr[nameof(Column.Name)].ToString(),
-                                DataType = dr[nameof(Column.DataType)].ToString()
-                            };
-                        }
-                    }
-                }
-            }
-        }
 
         public IEnumerable<Parameter> GetParameters(Procedure procedure)
         {
@@ -183,13 +163,18 @@ namespace Zadatak.Dal
                 return ds;
             }
         }
-        public DataSet GetData(string query, string dbName)
+        public DataSet ExecuteQuery(string query, string dbName, TextBox tbSuccess)
         {
             using (SqlConnection con = new SqlConnection(cs + $"Database={dbName};"))
             {
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
                 DataSet ds = new DataSet(dbName);
                 da.Fill(ds);
+                if (ds.Tables.Count == 0)
+                {
+                    tbSuccess.Text = "Commands completed successfully.";
+                    return null;
+                }
                 ds.Tables[0].TableName = dbName;
                 return ds;
             }
